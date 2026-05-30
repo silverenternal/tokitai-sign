@@ -1,95 +1,81 @@
-use std::io::{stdout, Write};
-use std::{thread, time::Duration};
-use crossterm::{
-    ExecutableCommand,
-    cursor::{Hide, MoveTo, Show},
-    style::{Color, Stylize},
-    terminal::{Clear, ClearType, size},
+mod animation;
+mod capabilities;
+mod cli;
+mod terminal;
+mod theme;
+
+use std::io::{self, stdout};
+
+use animation::{
+    FrameRecordConfig, LogoRunConfig, print_snapshot, record_frames, replay_frames, run_loader,
+    run_logo, score_frames,
 };
+use capabilities::{TerminalCalibration, TerminalCapabilities};
+use cli::{Config, help_text, version_text};
+use terminal::Terminal;
+use theme::Theme;
 
-fn main() {
-    let mut stdout = stdout();
-    stdout.execute(Hide).unwrap(); // 隐藏光标
-
-    // 更平滑的颜色渐变：蓝 → 青 → 绿
-    let gradient_steps: Vec<(u8, u8, u8)> = (0..=50)
-        .step_by(2)
-        .map(|g| {
-            let g = g as u8;
-            let r = 0;
-            let green = g * 5;
-            let blue = 255u8.saturating_sub(g * 5);
-            (r, green, blue)
-        })
-        .collect();
-
-    // 使用空心圆作为最后的 spinner 符号
-    let spinner = ["◜", "◠", "◝", "◞", "◡", "◟", "○"]; // 空心圆符号
-
-    let total_steps = gradient_steps.len().saturating_sub(16); // 色块数量为16个
-    let total_steps = total_steps.min(gradient_steps.len() - 1);
-
-    // 获取终端宽度（只用 _cols）
-    let (_cols, _) = size().unwrap_or((80, 24)); // 默认宽度为80，行数为24
-
-    // 控制输出，避免中间的空行
-    let total_loops = 3; // 控制色条循环的次数
-
-    // 外层循环6次
-    for loop_count in 0..total_loops {
-        for i in 0..total_steps {
-            let mut block_str = String::new();
-
-            // 构造16个渐变色块
-            for j in 0..16 {
-                if i + j < gradient_steps.len() {
-                    let (r, g, b) = gradient_steps[i + j];
-                    block_str.push_str(&format!("{}", "█".with(Color::Rgb { r, g, b })));
-                }
-            }
-
-            // 计算百分比：基于外层循环的进度
-            let percent = (((loop_count * total_steps) + i) * 100) / (total_loops * total_steps); // 计算整个进度条的百分比
-            let spin = spinner[i % spinner.len()];
-            let info = format!("{} {}%", spin.with(Color::Green), percent);
-
-            let full_line = format!("{} {}", block_str, info);
-
-            // 在每次更新时输出进度条
-            stdout.execute(MoveTo(0, 0)).unwrap();
-            stdout.execute(Clear(ClearType::CurrentLine)).unwrap();
-            print!("{}", full_line);
-            stdout.flush().unwrap();  // 将缓冲区内容写入屏幕
-            thread::sleep(Duration::from_millis(100)); // 控制刷新速度
-        }
+fn main() -> io::Result<()> {
+    let config = Config::from_env();
+    if config.help {
+        println!("{}", help_text());
+        return Ok(());
+    }
+    if config.version {
+        println!("{}", version_text());
+        return Ok(());
     }
 
-    // 覆盖输出 "Start" 在行首
-    let final_msg = "Hermes Start!               ";
+    let capabilities = TerminalCapabilities::detect();
+    let calibration =
+        TerminalCalibration::detect(capabilities, config.profile, config.calibration_enabled);
+    let theme = Theme::load(config.theme_path.as_deref())?;
 
-    // 定位到行首并覆盖输出 "Start"
-    stdout.execute(MoveTo(0, 0)).unwrap();
-    print!("{}", final_msg.bold().with(Color::Cyan));
-    stdout.flush().unwrap();
+    if config.snapshot {
+        print_snapshot(config.profile, config.motion_preset, calibration, theme)?;
+        return Ok(());
+    }
+    if let Some(path) = config.record_frames_path.as_deref() {
+        record_frames(
+            path,
+            FrameRecordConfig {
+                profile: config.profile,
+                motion_preset: config.motion_preset,
+                calibration,
+                theme,
+                columns: 80,
+                rows: 24,
+                frames: 72,
+                fps: calibration.target_fps.min(120),
+            },
+        )?;
+        return Ok(());
+    }
+    if let Some(path) = config.score_frames_path.as_deref() {
+        println!("{}", score_frames(path)?);
+        return Ok(());
+    }
 
-    stdout.execute(Show).unwrap(); // 恢复光标
-    thread::sleep(Duration::from_secs(2)); // 等待2秒以便用户看到最终结果
+    let mut terminal = Terminal::new(stdout(), "tokitai-sign")?;
+
+    if let Some(path) = config.replay_frames_path.as_deref() {
+        return replay_frames(terminal.stdout_mut(), path);
+    }
+
+    if config.show_loader {
+        run_loader(terminal.stdout_mut(), config.speed)?;
+    }
+
+    run_logo(
+        terminal.stdout_mut(),
+        LogoRunConfig {
+            profile: config.profile,
+            motion_preset: config.motion_preset,
+            calibration,
+            theme,
+            inspect: config.inspect,
+        },
+        config.record_path.as_deref(),
+        config.replay_path.as_deref(),
+    )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

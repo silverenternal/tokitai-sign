@@ -1,0 +1,11 @@
+logo_base=#3497e2
+logo_shadow=#2c80c6
+logo_highlight=#ccf4ff
+trail_head=#daf8ff
+trail_body=#5cc2f6
+trail_tail=#246eb2
+accent=#98dcff
+dim=#4e84b8
+contrast_floor=0.34
+trail_span=36
+rhythm_intensity=1.0

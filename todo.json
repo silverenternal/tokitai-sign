@@ -1,0 +1,195 @@
+{
+  "project": "tokitai-sign",
+  "goal": "Advance the animation through graphics-research-inspired visual algorithms: spatiotemporal blue noise, filter-adapted temporal sampling, perceptual error placement, anisotropic motion sampling, vorticity-preserving mouse flow, layer-aware perception, constrained OKLCH color optimization, and cell-space temporal anti-aliasing.",
+  "research_basis": [
+    {
+      "topic": "Spatiotemporal blue noise",
+      "inspiration": "Use blue-noise properties across x, y, and time to reduce low-sample flicker and improve temporal stability in animated sparse effects."
+    },
+    {
+      "topic": "Filter-adapted sampling",
+      "inspiration": "Adapt sample distributions to the temporal reconstruction filter instead of treating afterimage as a separate post-process."
+    },
+    {
+      "topic": "Perceptual error optimization",
+      "inspiration": "Move stochastic error into visually less sensitive regions and frequencies rather than distributing it uniformly."
+    },
+    {
+      "topic": "Projective and anisotropic blue-noise sampling",
+      "inspiration": "Match sample spacing to motion direction so fast directional trails read as intentional motion instead of random sparkle."
+    },
+    {
+      "topic": "Vorticity confinement",
+      "inspiration": "Preserve small-scale curl in a low-resolution velocity field so mouse-driven particles feel like a coherent flow."
+    },
+    {
+      "topic": "Perceptual color spaces and constrained color optimization",
+      "inspiration": "Optimize OKLCH lightness and chroma under contrast, smoothness, gamut, and layer-role constraints."
+    },
+    {
+      "topic": "Temporal anti-aliasing",
+      "inspiration": "Use history accumulation with rejection and confidence rather than simple residual trails."
+    }
+  ],
+  "status": "completed",
+  "todos": [
+    {
+      "id": "stbn-particle-scheduler",
+      "priority": "critical",
+      "title": "Implement spatiotemporal blue-noise particle scheduling",
+      "status": "completed",
+      "implemented": [
+        "Added deterministic stbn_value(column,row,layer,frame_index).",
+        "Applied STBN gates and shimmer to background particle heads and tails.",
+        "Kept deterministic snapshot and frame recording behavior."
+      ],
+      "verification": [
+        "stbn_values_are_deterministic_and_temporally_decorrelated",
+        "particle_sampling_spreads_points_across_the_field",
+        "snapshot_summary_is_deterministic_for_fixed_frame"
+      ]
+    },
+    {
+      "id": "filter-adapted-afterimage",
+      "priority": "critical",
+      "title": "Replace fixed afterimage decay with filter-adapted temporal sampling",
+      "status": "completed",
+      "implemented": [
+        "Added TemporalKernel with FPS-specific history weight, rejection threshold, and decay seconds.",
+        "AfterimageBuffer now selects kernels from TerminalCalibration.target_fps.",
+        "Text remains excluded from afterimage capture."
+      ],
+      "verification": [
+        "temporal_kernel_shortens_afterimage_at_120fps",
+        "afterimage_buffer_renders_motion_layers_but_not_text"
+      ]
+    },
+    {
+      "id": "perceptual-error-particle-placement",
+      "priority": "critical",
+      "title": "Drive particle placement with a perceptual error field",
+      "status": "completed",
+      "implemented": [
+        "Added PerceptualErrorField derived from logo area, frame box, and mouse focus.",
+        "Background particle visibility and intensity are attenuated in high-attention regions.",
+        "Logo and orbit hierarchy are protected without increasing particle density."
+      ],
+      "verification": [
+        "perceptual_error_field_protects_logo_region",
+        "starfield_builds_particle_only_parallax_layers"
+      ]
+    },
+    {
+      "id": "anisotropic-motion-blue-noise",
+      "priority": "high",
+      "title": "Add anisotropic blue-noise sampling for directional trails",
+      "status": "completed",
+      "implemented": [
+        "Added velocity-aligned anisotropic_distance.",
+        "Mouse drag emission uses anisotropic spacing to keep fast trails long and narrow.",
+        "Existing mouse speed buckets continue to shape tail length and swirl radius."
+      ],
+      "verification": [
+        "anisotropic_distance_stretches_along_motion_direction",
+        "mouse_flow_responds_to_speed",
+        "mouse_particle_system_emits_motion_trail_particles"
+      ]
+    },
+    {
+      "id": "vorticity-preserving-mouse-field",
+      "priority": "critical",
+      "title": "Replace per-particle mouse forces with a vorticity-preserving velocity grid",
+      "status": "completed",
+      "implemented": [
+        "Added VelocityGrid with x/y velocity and curl per coarse terminal region.",
+        "Left-button mouse drag injects velocity and curl; release does not emit new particles.",
+        "Particles sample velocity and vorticity confinement forces during integration."
+      ],
+      "verification": [
+        "velocity_grid_injection_decays_and_samples_motion",
+        "release_wake_does_not_emit_new_mouse_particles",
+        "mouse_drag_logic_requires_left_button_down"
+      ]
+    },
+    {
+      "id": "layer-aware-perceptual-contrast",
+      "priority": "critical",
+      "title": "Replace single contrast floor with layer-aware perceptual contrast",
+      "status": "completed",
+      "implemented": [
+        "Added PerceptualRole for background particles, afterimages, mouse trails, orbit, status text, and logo.",
+        "Display color selection and VisualScore contrast checks now use role-specific floors.",
+        "Mouse trails, orbit lines, status text, and logo use separate rendering roles."
+      ],
+      "verification": [
+        "role_color_optimizer_respects_role_contrast_floors",
+        "visual_score_reports_role_aware_fields",
+        "ablation_fixtures_penalize_clumping_and_contrast_hierarchy_failures"
+      ]
+    },
+    {
+      "id": "oklch-constrained-color-optimizer",
+      "priority": "high",
+      "title": "Upgrade color selection to constrained OKLCH optimization",
+      "status": "completed",
+      "implemented": [
+        "Added bounded OKLCH lightness/chroma search with role contrast constraints.",
+        "Hue-preserving search is preferred before contrast fallback.",
+        "Contrast fallback uses a stronger high-blue highlight target for terminal readability."
+      ],
+      "verification": [
+        "role_color_optimizer_respects_role_contrast_floors",
+        "oklch_blend_takes_short_hue_path_and_preserves_contrast",
+        "contrast_model_boosts_dark_blue_colors"
+      ]
+    },
+    {
+      "id": "cell-space-temporal-aa",
+      "priority": "critical",
+      "title": "Implement cell-space temporal anti-aliasing with history rejection",
+      "status": "completed",
+      "implemented": [
+        "Added CellTemporalAaBuffer storing previous color, role, and confidence per cell.",
+        "History is rejected on role mismatch and high color delta.",
+        "Background and motion cells accumulate history; logo/status text remain crisp."
+      ],
+      "verification": [
+        "cell_temporal_aa_smooths_background_but_rejects_text",
+        "dirty_frame_skips_identical_cells",
+        "moving_orbit_clears_cells_left_by_previous_frame"
+      ]
+    },
+    {
+      "id": "research-grade-visual-score",
+      "priority": "medium",
+      "title": "Revise visual scoring around perceptual roles and temporal spectra",
+      "status": "completed",
+      "implemented": [
+        "VisualScore now separates foreground_clarity and background_atmosphere.",
+        "Flicker uses role-weighted lightness deltas instead of only global frame deltas.",
+        "Contrast violations are evaluated against each cell's perceptual role."
+      ],
+      "verification": [
+        "visual_score_prefers_good_fixture_over_flicker_fixture",
+        "visual_score_reports_role_aware_fields",
+        "ablation_fixtures_penalize_clumping_and_contrast_hierarchy_failures"
+      ]
+    },
+    {
+      "id": "algorithmic-ablation-fixtures",
+      "priority": "medium",
+      "title": "Add ablation fixtures for algorithm comparison",
+      "status": "completed",
+      "implemented": [
+        "Added compact deterministic clumped-particle fixture.",
+        "Added compact deterministic role-contrast hierarchy fixture.",
+        "Extended tests to assert the scorer catches clumping and contrast hierarchy failures."
+      ],
+      "verification": [
+        "tests/fixtures/clumped_particles.jsonl",
+        "tests/fixtures/role_contrast_hierarchy.jsonl",
+        "ablation_fixtures_penalize_clumping_and_contrast_hierarchy_failures"
+      ]
+    }
+  ]
+}

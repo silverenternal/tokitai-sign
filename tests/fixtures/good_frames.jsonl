@@ -1,0 +1,4 @@
+{"type":"header","columns":20,"rows":8,"fps":60,"profile":"fixture","motion":"fixture","glyph":"Unicode","terminal_profile":"fixture","theme_hash":"0000000000000001"}
+{"type":"frame","index":0,"timestamp":0.0000,"cells":"2,2,2e,40,90,130,0;8,3,2588,170,220,255,2"}
+{"type":"frame","index":1,"timestamp":0.0167,"cells":"3,2,2e,42,92,132,0;8,3,2588,172,222,255,2"}
+{"type":"frame","index":2,"timestamp":0.0333,"cells":"4,2,2e,44,94,134,0;8,3,2588,174,224,255,2"}

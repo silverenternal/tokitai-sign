@@ -1,0 +1,4 @@
+{"type":"header","columns":20,"rows":8,"fps":60,"profile":"fixture","motion":"ablation-clump","glyph":"Unicode","terminal_profile":"fixture","theme_hash":"0000000000000002"}
+{"type":"frame","index":0,"timestamp":0.0000,"cells":"2,2,2e,40,90,130,0;3,2,2e,42,92,132,0;2,3,2e,44,94,134,0;8,3,2588,170,220,255,2"}
+{"type":"frame","index":1,"timestamp":0.0167,"cells":"2,2,2e,90,170,230,0;3,2,2e,20,40,60,0;2,3,2e,88,166,224,0;8,3,2588,170,220,255,2"}
+{"type":"frame","index":2,"timestamp":0.0333,"cells":"2,2,2e,40,90,130,0;3,2,2e,42,92,132,0;2,3,2e,44,94,134,0;8,3,2588,170,220,255,2"}

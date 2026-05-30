@@ -1,7 +1,15 @@
 [package]
-name = "Hermes"
+name = "tokitai-sign"
 version = "0.1.0"
 edition = "2024"
+description = "A high-frame-rate terminal splash animation with deep-space particles, persistent tokitai sign, and mouse-driven physics trails."
+repository = "https://github.com/silverenternal/tokitai-sign"
+license = "MIT"
 
 [dependencies]
 crossterm = "0.27"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
