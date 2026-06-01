@@ -1,0 +1,6 @@
+profile,glyph_history,low_latency,uncapped_sleep,adaptive_low_latency_possible,mean_build_time_us,p99_build_time_us,fps60_budget_percent,fps120_budget_percent,fps240_budget_percent,fps1000_budget_percent,fps1200_budget_percent,terminal_io_included,claim
+full-topology-dp,topology-dp,false,false,true,12678.3945,12704.8682,76.0704,152.1408,304.2812,1267.8395,1521.4135,false,measured-frame-build-does-not-fit-120fps-budget
+medium-latency-topology-dp,topology-dp,false,false,true,2049.0430,2053.2253,12.2943,24.5885,49.1770,204.9043,245.8861,false,measured-frame-build-fits-240fps-but-not-1000fps-budget
+low-latency-topology-dp,topology-dp,true,false,false,528.0128,529.7380,3.1681,6.3362,12.6723,52.8013,63.3618,false,measured-frame-build-fits-1200fps-budget
+uncapped-low-latency-topology-dp,topology-dp,true,true,false,527.5681,529.7848,3.1654,6.3308,12.6616,52.7568,63.3084,false,measured-frame-build-fits-1200fps-budget
+low-latency-path-fallback,path,true,false,false,524.8397,548.0906,3.1490,6.2981,12.5961,52.4840,62.9810,false,measured-frame-build-fits-1200fps-budget

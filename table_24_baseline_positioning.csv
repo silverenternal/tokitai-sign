@@ -1,0 +1,9 @@
+baseline,reviewer_category,implemented_as,what_it_tests,known_limitation,direct_comparison
+per-frame-glyph-rasterization,standard-grid-line-rasterization,glyph-history-off,per-frame character choice without temporal state,does not preserve temporal identity,yes
+screen-cell-history,coordinate-keyed-temporal-history,glyph-history-screen-cell,screen-space history analogous to coordinate-keyed TAA,loses moving primitive identity under translation,yes
+path-indexed-cache,path-keyed-history-baseline,glyph-history-path,path identity cache without topology-constrained assignment,does not optimize neighbor topology or corner identity,yes
+topology-dp,proposed-topology-constrained-assignment,glyph-history-topology-dp,temporal identity plus local path distance plus topology/corner costs,limited by recoverable correspondence window,proposed
+dirty-cell-rendering,tui-damage-rendering-adjacent-system,dirty-mode-family,cell emission and update bandwidth,separate from glyph identity reconstruction,adjacent-not-direct
+terminal-image-rendering,image-to-glyph-adjacent-system,related-work-only,image/video approximation with glyphs,does not preserve path-indexed line primitive identity,adjacent-not-direct
+pixel-taa,pixel-history-adjacent-system,related-work-only,temporal history and validation in pixel space,does not operate on finite topology-sensitive glyph alphabet,adjacent-not-direct
+vector-stroke-coherence,continuous-stroke-adjacent-system,related-work-only,stroke identity in vector or NPR domains,output is not a terminal character grid,adjacent-not-direct

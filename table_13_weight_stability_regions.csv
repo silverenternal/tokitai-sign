@@ -1,0 +1,5 @@
+weight_axis,tested_multiplier_min,tested_multiplier_max,stable_multiplier_min,stable_multiplier_max,canonical_stable_variants,stress_boundary_preserved,default_selection_rationale
+temporal,0.5000,1.5000,0.5000,1.0000,0.5x|1.0x,yes,balanced identity/local/topology/corner preferences; not fitted to remove stress failures
+local,0.5000,1.5000,0.5000,1.5000,0.5x|1.0x|1.5x,yes,balanced identity/local/topology/corner preferences; not fitted to remove stress failures
+topology,0.5000,1.5000,1.0000,1.5000,1.0x|1.5x,yes,balanced identity/local/topology/corner preferences; not fitted to remove stress failures
+corner,0.5000,1.5000,0.5000,1.5000,0.5x|1.0x|1.5x,yes,balanced identity/local/topology/corner preferences; not fitted to remove stress failures

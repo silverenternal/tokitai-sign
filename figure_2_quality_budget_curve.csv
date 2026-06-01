@@ -1,0 +1,3 @@
+source_csv,x_axis,y_axis,series,notes
+table_2_dirty_budget_curves.csv,budget,visual_quality_score,dirty_mode,Plot quality score against fixed dirty-cell budget for each dirty mode.
+table_2_dirty_budget_curves.csv,budget,dirty_cell_pressure,dirty_mode,Plot dirty pressure against fixed dirty-cell budget for each dirty mode.

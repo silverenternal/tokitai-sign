@@ -1,0 +1,9 @@
+dataset,glyph_history,topology_breaks_per_frame,endpoint_drift,screen_discontinuity_rate,path_order_violation_rate,connected_component_instability,stroke_metric_difference,glyph_flips_per_second,corner_glyph_instability,verdict
+real-orbit,off,2.0000,0.0000,1.0000,0.0000,0.0000,0.2500,360.0000,0.5070,unstable
+real-orbit,screen-cell,2.0000,0.0000,1.0000,0.0000,0.0000,0.1232,177.4648,0.2535,unstable
+real-orbit,path,2.0000,0.0000,1.0000,0.0000,0.0000,0.0552,79.4366,0.1080,partially-stable
+real-orbit,topology-dp,2.0000,0.0000,1.0000,0.0000,0.0000,0.0000,0.0000,0.0000,partially-stable
+glyph-stress,off,0.0000,0.0000,0.4286,0.0000,0.0000,0.1667,480.0000,0.5070,unstable
+glyph-stress,screen-cell,0.0000,0.0000,0.4286,0.0000,0.0000,0.0411,118.3099,0.1268,partially-stable
+glyph-stress,path,0.0000,0.0000,0.4286,0.0000,0.0000,0.0276,79.4366,0.0810,partially-stable
+glyph-stress,topology-dp,0.0000,0.0000,0.4286,0.0000,0.0000,0.0000,0.0000,0.0000,topology-stable

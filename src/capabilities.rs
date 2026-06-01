@@ -248,6 +248,11 @@ impl TerminalCalibration {
     pub fn frame_delay(self) -> Duration {
         Duration::from_nanos(1_000_000_000u64 / u64::from(self.target_fps.max(1)))
     }
+
+    pub fn with_target_fps(mut self, target_fps: u16) -> Self {
+        self.target_fps = target_fps.max(1);
+        self
+    }
 }
 
 impl ThroughputMetrics {

@@ -1,0 +1,15 @@
+cells_per_frame,glyph_history,expected_correspondence_recoverable,ground_truth_outside_candidate_window,path_order_violation_rate,screen_discontinuity_rate,correspondence_lost_rate,recoverability_detection,verdict,interpretation
+0,path,true,false,0.0000,0.0000,0.0000,not-expected,inside-window-no-loss,recoverable_motion_stable_identity
+0,topology-dp,true,false,0.0000,0.0000,0.0000,not-expected,inside-window-no-loss,recoverable_motion_stable_identity
+1,path,true,false,0.0000,0.0000,0.0000,not-expected,inside-window-no-loss,recoverable_motion_with_residual_corner_instability
+1,topology-dp,true,false,0.0000,0.0000,0.0000,not-expected,inside-window-no-loss,recoverable_motion_with_residual_corner_instability
+2,path,true,false,0.0000,0.0000,0.0000,not-expected,inside-window-no-loss,recoverable_motion_with_residual_corner_instability
+2,topology-dp,true,false,0.0000,0.0000,0.0000,not-expected,inside-window-no-loss,recoverable_motion_with_residual_corner_instability
+3,path,false,true,0.0000,0.0000,0.0000,not-detected-by-mode,inside-window-no-loss,recoverable_motion_with_residual_corner_instability
+3,topology-dp,false,true,0.0000,0.0000,1.0000,detected,outside-window-detected,outside_candidate_window_detected_as_correspondence_loss
+4,path,false,true,0.0000,0.0000,0.0000,not-detected-by-mode,inside-window-no-loss,recoverable_motion_with_residual_corner_instability
+4,topology-dp,false,true,0.0000,0.0000,1.0000,detected,outside-window-detected,outside_candidate_window_detected_as_correspondence_loss
+5,path,false,true,0.0000,0.0000,0.0000,not-detected-by-mode,inside-window-no-loss,recoverable_motion_with_residual_corner_instability
+5,topology-dp,false,true,0.0000,0.0000,1.0000,detected,outside-window-detected,outside_candidate_window_detected_as_correspondence_loss
+6,path,false,true,0.0000,0.0000,0.0000,not-detected-by-mode,inside-window-no-loss,recoverable_motion_with_residual_corner_instability
+6,topology-dp,false,true,0.0000,0.0000,1.0000,detected,outside-window-detected,outside_candidate_window_detected_as_correspondence_loss

@@ -1,0 +1,5 @@
+stage,input,output,notes
+cell_classification,"glyph,color,layer,position","perceptual_role","Assign logo, orbit, background particle, afterimage, mouse trail, or status text."
+dirty_policy,"previous_cell,current_cell,role","dirty_or_suppressed","Apply naive, uniform-threshold, role-aware, or full dirty predicate."
+glyph_history,"sub_cell_path_position,path_index,screen_cell","stable_glyph_alpha","Compare off, screen-cell, and path-indexed temporal history."
+budget_scoring,"dirty_cells,dirty_runs,frame_sequence","quality_metrics","Score quality under fixed ANSI dirty-cell budgets."

@@ -1,0 +1,5 @@
+dataset,profile,glyph_history,low_latency,topology_breaks_per_frame,endpoint_drift,screen_discontinuity_rate,path_order_violation_rate,connected_component_instability,stroke_metric_difference,glyph_flips_per_second,corner_glyph_instability,identity_verdict,topology_verdict,metric_scope_note
+real-orbit,full-visual,topology-dp,false,2.0000,0.0000,1.0000,0.0000,0.0000,0.0000,0.0000,0.0000,glyph-identity-stable,partially-stable,identity_stable_but_screen_connectivity_metric_flags_open_or_sampled_curve
+real-orbit,low-latency,topology-dp,true,2.0000,0.0000,1.0000,0.0000,0.0000,0.0000,0.0000,0.0000,glyph-identity-stable,partially-stable,identity_stable_but_screen_connectivity_metric_flags_open_or_sampled_curve
+glyph-stress,full-visual,topology-dp,false,0.0000,0.0000,0.4286,0.0000,0.0000,0.0000,0.0000,0.0000,glyph-identity-stable,topology-stable,identity_stable_but_screen_connectivity_metric_flags_open_or_sampled_curve
+glyph-stress,low-latency,topology-dp,true,0.0000,0.0000,0.4286,0.0000,0.0000,0.0000,0.0000,0.0000,glyph-identity-stable,topology-stable,identity_stable_but_screen_connectivity_metric_flags_open_or_sampled_curve

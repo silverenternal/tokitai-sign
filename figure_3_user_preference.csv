@@ -1,0 +1,10 @@
+comparison,question,baseline_votes,proposed_votes,participants,proposed_preference_percent,notes
+naive_vs_full_path,smoother,,,,,
+naive_vs_full_path,more_readable,,,,,
+naive_vs_full_path,less_distracting,,,,,
+role_aware_vs_full_path,smoother,,,,,
+role_aware_vs_full_path,more_readable,,,,,
+role_aware_vs_full_path,less_distracting,,,,,
+screen_cell_vs_path,smoother,,,,,
+screen_cell_vs_path,more_readable,,,,,
+screen_cell_vs_path,less_distracting,,,,,

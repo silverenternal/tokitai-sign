@@ -1,0 +1,5 @@
+glyph_history,low_latency,frames,mean_build_time_us,p95_build_time_us,p99_build_time_us,worst_build_time_us,topology_overhead_us,scope,fps60_budget_percent,fps120_budget_percent
+off,false,8,12693.2363,12699.8115,12699.8115,12699.8115,0.0000,release-frame-build-no-terminal-io,76.1594,152.3189
+screen-cell,false,8,12707.7812,12730.3477,12730.3477,12730.3477,0.0000,release-frame-build-no-terminal-io,76.2467,152.4934
+path,false,8,12692.3057,12703.8486,12703.8486,12703.8486,0.0000,release-frame-build-no-terminal-io,76.1538,152.3077
+topology-dp,false,8,12707.5078,12725.4492,12725.4492,12725.4492,3.0410,release-frame-build-no-terminal-io,76.2450,152.4902

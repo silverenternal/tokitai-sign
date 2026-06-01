@@ -1,195 +1,193 @@
 {
   "project": "tokitai-sign",
-  "goal": "Advance the animation through graphics-research-inspired visual algorithms: spatiotemporal blue noise, filter-adapted temporal sampling, perceptual error placement, anisotropic motion sampling, vorticity-preserving mouse flow, layer-aware perception, constrained OKLCH color optimization, and cell-space temporal anti-aliasing.",
-  "research_basis": [
-    {
-      "topic": "Spatiotemporal blue noise",
-      "inspiration": "Use blue-noise properties across x, y, and time to reduce low-sample flicker and improve temporal stability in animated sparse effects."
-    },
-    {
-      "topic": "Filter-adapted sampling",
-      "inspiration": "Adapt sample distributions to the temporal reconstruction filter instead of treating afterimage as a separate post-process."
-    },
-    {
-      "topic": "Perceptual error optimization",
-      "inspiration": "Move stochastic error into visually less sensitive regions and frequencies rather than distributing it uniformly."
-    },
-    {
-      "topic": "Projective and anisotropic blue-noise sampling",
-      "inspiration": "Match sample spacing to motion direction so fast directional trails read as intentional motion instead of random sparkle."
-    },
-    {
-      "topic": "Vorticity confinement",
-      "inspiration": "Preserve small-scale curl in a low-resolution velocity field so mouse-driven particles feel like a coherent flow."
-    },
-    {
-      "topic": "Perceptual color spaces and constrained color optimization",
-      "inspiration": "Optimize OKLCH lightness and chroma under contrast, smoothness, gamut, and layer-role constraints."
-    },
-    {
-      "topic": "Temporal anti-aliasing",
-      "inspiration": "Use history accumulation with rejection and confidence rather than simple residual trails."
-    }
-  ],
-  "status": "completed",
+  "status": "feature_expansion_and_optimization_plan_pending",
+  "created_for": "shift focus from reviewer-audit hardening to implementation expansion and algorithm optimization",
+  "direction": {
+    "primary_goal": "Improve the actual renderer and algorithmic capability: more line primitives, richer motion, stronger topology reconstruction, faster frame construction, and practical terminal-facing features.",
+    "non_goals": [
+      "Do not add more reviewer-audit-only tasks.",
+      "Do not spend this cycle on cover letters, novelty matrices, or literature-search packaging.",
+      "Do not frame terminal portability itself as the academic contribution."
+    ],
+    "success_definition": "The codebase should gain visible new rendering capabilities and measurable performance/quality improvements that can later be documented, rather than only stronger wording around existing results."
+  },
   "todos": [
     {
-      "id": "stbn-particle-scheduler",
+      "id": "f1-generalize-line-primitive-model",
       "priority": "critical",
-      "title": "Implement spatiotemporal blue-noise particle scheduling",
-      "status": "completed",
-      "implemented": [
-        "Added deterministic stbn_value(column,row,layer,frame_index).",
-        "Applied STBN gates and shimmer to background particle heads and tails.",
-        "Kept deterministic snapshot and frame recording behavior."
+      "status": "pending",
+      "goal": "Extend the renderer beyond the current narrow moving-line cases.",
+      "implementation": [
+        "Add a unified primitive model for segment, polyline, rectangle, arc approximation, closed loop, and multi-stroke glyph-like paths.",
+        "Carry stable primitive_id, stroke_id, vertex_id, and local topology metadata through rasterization.",
+        "Make existing orbit/line fixtures use the generalized model instead of one-off path handling."
       ],
-      "verification": [
-        "stbn_values_are_deterministic_and_temporally_decorrelated",
-        "particle_sampling_spreads_points_across_the_field",
-        "snapshot_summary_is_deterministic_for_fixed_frame"
+      "acceptance_criteria": [
+        "Existing tests still pass.",
+        "At least three primitive families render through the same topology-dp path.",
+        "Generated metadata is stable across frames for continuous motion."
       ]
     },
     {
-      "id": "filter-adapted-afterimage",
+      "id": "f2-topology-dp-multi-stroke-support",
       "priority": "critical",
-      "title": "Replace fixed afterimage decay with filter-adapted temporal sampling",
-      "status": "completed",
-      "implemented": [
-        "Added TemporalKernel with FPS-specific history weight, rejection threshold, and decay seconds.",
-        "AfterimageBuffer now selects kernels from TerminalCalibration.target_fps.",
-        "Text remains excluded from afterimage capture."
+      "status": "pending",
+      "goal": "Make topology-dp handle multiple simultaneous strokes without identity bleeding.",
+      "implementation": [
+        "Group candidate glyph assignments by primitive_id and stroke_id before temporal matching.",
+        "Add collision handling when multiple strokes compete for the same terminal cell.",
+        "Prefer stable ownership transfer rules over last-writer-wins behavior."
       ],
-      "verification": [
-        "temporal_kernel_shortens_afterimage_at_120fps",
-        "afterimage_buffer_renders_motion_layers_but_not_text"
+      "acceptance_criteria": [
+        "Crossing and near-overlap scenes keep stroke identity stable where correspondence is recoverable.",
+        "Collision cases are deterministic.",
+        "Runtime remains within the low-latency frame-build budget for small and medium scenes."
       ]
     },
     {
-      "id": "perceptual-error-particle-placement",
+      "id": "f3-incremental-topology-cache",
       "priority": "critical",
-      "title": "Drive particle placement with a perceptual error field",
-      "status": "completed",
-      "implemented": [
-        "Added PerceptualErrorField derived from logo area, frame box, and mouse focus.",
-        "Background particle visibility and intensity are attenuated in high-attention regions.",
-        "Logo and orbit hierarchy are protected without increasing particle density."
+      "status": "pending",
+      "goal": "Reduce repeated topology-dp work between adjacent frames.",
+      "implementation": [
+        "Cache per-primitive candidate neighborhoods and previous-frame assignment state.",
+        "Invalidate only cells touched by moving primitives or changed terminal calibration.",
+        "Add a fast path for sub-cell motion that does not change the local topology class."
       ],
-      "verification": [
-        "perceptual_error_field_protects_logo_region",
-        "starfield_builds_particle_only_parallax_layers"
+      "acceptance_criteria": [
+        "Frame-build p50 and p99 improve on canonical orbit and multi-stroke fixtures.",
+        "Cache invalidation is covered by tests for resize, primitive add/remove, and topology break/reconnect.",
+        "Output remains byte-identical to the uncached path for deterministic fixtures."
       ]
     },
     {
-      "id": "anisotropic-motion-blue-noise",
+      "id": "f4-quality-ladder-runtime-policy",
       "priority": "high",
-      "title": "Add anisotropic blue-noise sampling for directional trails",
-      "status": "completed",
-      "implemented": [
-        "Added velocity-aligned anisotropic_distance.",
-        "Mouse drag emission uses anisotropic spacing to keep fast trails long and narrow.",
-        "Existing mouse speed buckets continue to shape tail length and swirl radius."
+      "status": "pending",
+      "goal": "Turn the existing performance profiles into an adaptive runtime policy.",
+      "implementation": [
+        "Add an automatic quality ladder that can switch between full, medium, low-latency, and emergency modes.",
+        "Use measured frame-build time, dirty-cell count, and scene complexity as policy inputs.",
+        "Expose a config knob for target frame budget, including 60 FPS, 240 FPS, and 1200 FPS budgets."
       ],
-      "verification": [
-        "anisotropic_distance_stretches_along_motion_direction",
-        "mouse_flow_responds_to_speed",
-        "mouse_particle_system_emits_motion_trail_particles"
+      "acceptance_criteria": [
+        "The policy never exceeds the configured budget for more than a bounded number of consecutive frames in stress tests.",
+        "Mode switches are logged or observable in benchmark output.",
+        "Visual degradation is ordered: emergency mode drops nonessential effects before topology identity."
       ]
     },
     {
-      "id": "vorticity-preserving-mouse-field",
-      "priority": "critical",
-      "title": "Replace per-particle mouse forces with a vorticity-preserving velocity grid",
-      "status": "completed",
-      "implemented": [
-        "Added VelocityGrid with x/y velocity and curl per coarse terminal region.",
-        "Left-button mouse drag injects velocity and curl; release does not emit new particles.",
-        "Particles sample velocity and vorticity confinement forces during integration."
-      ],
-      "verification": [
-        "velocity_grid_injection_decays_and_samples_motion",
-        "release_wake_does_not_emit_new_mouse_particles",
-        "mouse_drag_logic_requires_left_button_down"
-      ]
-    },
-    {
-      "id": "layer-aware-perceptual-contrast",
-      "priority": "critical",
-      "title": "Replace single contrast floor with layer-aware perceptual contrast",
-      "status": "completed",
-      "implemented": [
-        "Added PerceptualRole for background particles, afterimages, mouse trails, orbit, status text, and logo.",
-        "Display color selection and VisualScore contrast checks now use role-specific floors.",
-        "Mouse trails, orbit lines, status text, and logo use separate rendering roles."
-      ],
-      "verification": [
-        "role_color_optimizer_respects_role_contrast_floors",
-        "visual_score_reports_role_aware_fields",
-        "ablation_fixtures_penalize_clumping_and_contrast_hierarchy_failures"
-      ]
-    },
-    {
-      "id": "oklch-constrained-color-optimizer",
+      "id": "f5-dirty-region-and-ansi-output-optimizer",
       "priority": "high",
-      "title": "Upgrade color selection to constrained OKLCH optimization",
-      "status": "completed",
-      "implemented": [
-        "Added bounded OKLCH lightness/chroma search with role contrast constraints.",
-        "Hue-preserving search is preferred before contrast fallback.",
-        "Contrast fallback uses a stronger high-blue highlight target for terminal readability."
+      "status": "pending",
+      "goal": "Optimize the terminal output path, not only internal frame construction.",
+      "implementation": [
+        "Track dirty rectangles or dirty spans at row granularity.",
+        "Coalesce adjacent ANSI writes with shared style state.",
+        "Avoid emitting redundant color/style resets where the terminal state is already known."
       ],
-      "verification": [
-        "role_color_optimizer_respects_role_contrast_floors",
-        "oklch_blend_takes_short_hue_path_and_preserves_contrast",
-        "contrast_model_boosts_dark_blue_colors"
+      "acceptance_criteria": [
+        "Bytes written per frame decrease on sparse-motion scenes.",
+        "Dense scenes do not regress significantly.",
+        "Rendered output remains visually equivalent in snapshot fixtures."
       ]
     },
     {
-      "id": "cell-space-temporal-aa",
+      "id": "f6-glyph-stroke-continuity-metric-and-optimizer",
+      "priority": "high",
+      "status": "pending",
+      "goal": "Optimize visual continuity beyond identity flips.",
+      "implementation": [
+        "Add a stroke-shape continuity metric based on glyph stroke class, corner type, and local direction.",
+        "Feed the metric back into topology-dp as an optional continuity penalty.",
+        "Report the metric in existing benchmark tables."
+      ],
+      "acceptance_criteria": [
+        "Topology-dp avoids visually abrupt stroke-thickness or corner-style changes when equivalent topology choices exist.",
+        "The new penalty does not reintroduce identity flips on canonical fixtures.",
+        "The metric is deterministic and cheap enough for benchmark runs."
+      ]
+    },
+    {
+      "id": "f7-motion-model-library",
+      "priority": "medium",
+      "status": "pending",
+      "goal": "Make demos and tests less repetitive by adding reusable motion generators.",
+      "implementation": [
+        "Add reusable motion models: orbit, sinusoidal drift, Brownian jitter, eased waypoint path, spring-follow, and sudden reconnect.",
+        "Allow fixtures to compose primitive families with motion generators.",
+        "Keep all random motion seeded and reproducible."
+      ],
+      "acceptance_criteria": [
+        "At least five fixture scenes are defined through reusable motion models.",
+        "Seeded runs are deterministic.",
+        "New motion models can be used both by demos and benchmark scripts."
+      ]
+    },
+    {
+      "id": "f8-interactive-demo-controls",
+      "priority": "medium",
+      "status": "pending",
+      "goal": "Expose the renderer improvements through a usable interactive demo.",
+      "implementation": [
+        "Add keyboard controls for algorithm mode, quality profile, primitive scene, speed, trail intensity, and pause/step.",
+        "Show a compact in-terminal HUD with current mode, frame-build time, dirty-cell count, and active primitive count.",
+        "Keep controls optional so benchmark output stays clean."
+      ],
+      "acceptance_criteria": [
+        "A user can switch between off, screen, path, and topology-dp without restarting.",
+        "The HUD does not interfere with benchmark capture mode.",
+        "Controls are documented in the CLI help or README."
+      ]
+    },
+    {
+      "id": "f9-benchmark-harness-cleanup",
+      "priority": "medium",
+      "status": "pending",
+      "goal": "Make performance and quality checks easier to run while developing features.",
+      "implementation": [
+        "Unify benchmark command flags for scene, algorithm, profile, seed, frame count, and output CSV path.",
+        "Add a short smoke benchmark that runs quickly in CI.",
+        "Add a longer local benchmark profile for performance tuning."
+      ],
+      "acceptance_criteria": [
+        "One command can compare all algorithm modes on a selected scene.",
+        "CI smoke benchmark finishes quickly and catches obvious regressions.",
+        "Local benchmark output includes frame-build timing, dirty cells, glyph flips, corner flips, and stroke continuity."
+      ]
+    },
+    {
+      "id": "f10-final-feature-validation",
       "priority": "critical",
-      "title": "Implement cell-space temporal anti-aliasing with history rejection",
-      "status": "completed",
-      "implemented": [
-        "Added CellTemporalAaBuffer storing previous color, role, and confidence per cell.",
-        "History is rejected on role mismatch and high color delta.",
-        "Background and motion cells accumulate history; logo/status text remain crisp."
+      "status": "pending",
+      "goal": "Validate the implementation-focused cycle after the new features land.",
+      "implementation": [
+        "Run formatting, tests, deterministic fixture checks, and benchmark smoke tests.",
+        "Regenerate any derived benchmark tables touched by the feature work.",
+        "Update todo statuses with completed features and remaining engineering debt."
       ],
-      "verification": [
-        "cell_temporal_aa_smooths_background_but_rejects_text",
-        "dirty_frame_skips_identical_cells",
-        "moving_orbit_clears_cells_left_by_previous_frame"
-      ]
-    },
-    {
-      "id": "research-grade-visual-score",
-      "priority": "medium",
-      "title": "Revise visual scoring around perceptual roles and temporal spectra",
-      "status": "completed",
-      "implemented": [
-        "VisualScore now separates foreground_clarity and background_atmosphere.",
-        "Flicker uses role-weighted lightness deltas instead of only global frame deltas.",
-        "Contrast violations are evaluated against each cell's perceptual role."
-      ],
-      "verification": [
-        "visual_score_prefers_good_fixture_over_flicker_fixture",
-        "visual_score_reports_role_aware_fields",
-        "ablation_fixtures_penalize_clumping_and_contrast_hierarchy_failures"
-      ]
-    },
-    {
-      "id": "algorithmic-ablation-fixtures",
-      "priority": "medium",
-      "title": "Add ablation fixtures for algorithm comparison",
-      "status": "completed",
-      "implemented": [
-        "Added compact deterministic clumped-particle fixture.",
-        "Added compact deterministic role-contrast hierarchy fixture.",
-        "Extended tests to assert the scorer catches clumping and contrast hierarchy failures."
-      ],
-      "verification": [
-        "tests/fixtures/clumped_particles.jsonl",
-        "tests/fixtures/role_contrast_hierarchy.jsonl",
-        "ablation_fixtures_penalize_clumping_and_contrast_hierarchy_failures"
+      "acceptance_criteria": [
+        "The repo builds cleanly.",
+        "Core deterministic tests pass.",
+        "New features have at least targeted tests or benchmark coverage."
       ]
     }
-  ]
+  ],
+  "recommended_execution_order": [
+    "f1-generalize-line-primitive-model",
+    "f2-topology-dp-multi-stroke-support",
+    "f3-incremental-topology-cache",
+    "f4-quality-ladder-runtime-policy",
+    "f5-dirty-region-and-ansi-output-optimizer",
+    "f6-glyph-stroke-continuity-metric-and-optimizer",
+    "f7-motion-model-library",
+    "f8-interactive-demo-controls",
+    "f9-benchmark-harness-cleanup",
+    "f10-final-feature-validation"
+  ],
+  "bottom_line": {
+    "focus": "Feature growth and algorithmic optimization, not paper-audit hardening.",
+    "expected_result": "A renderer that supports richer primitives, more difficult motion, multi-stroke topology stability, adaptive quality profiles, lower output cost, and better developer-facing benchmarks.",
+    "next_best_action": "Start with the generalized primitive model because it unlocks multi-stroke topology-dp, randomized scenes, interactive demos, and cleaner benchmarks."
+  }
 }

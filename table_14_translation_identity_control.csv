@@ -1,0 +1,9 @@
+cells_per_frame,glyph_history,path_keyed_corner_identity_flip_rate,path_keyed_glyph_flip_rate,screen_coordinate_corner_flip_rate,correspondence_lost_rate,metric_scope,interpretation
+0,path,0.0000,0.0000,0.0000,0.0000,path-keyed-translation-control,path_identity_stable_inside_candidate_window
+0,topology-dp,0.0000,0.0000,0.0000,0.0000,path-keyed-translation-control,path_identity_stable_inside_candidate_window
+1,path,0.0000,0.0000,1.0000,0.0000,path-keyed-translation-control,path_identity_stable_inside_candidate_window
+1,topology-dp,0.0000,0.0000,1.0000,0.0000,path-keyed-translation-control,path_identity_stable_inside_candidate_window
+2,path,0.2535,0.0634,1.0000,0.0000,path-keyed-translation-control,residual_path_identity_change
+2,topology-dp,0.0000,0.0000,1.0000,0.0000,path-keyed-translation-control,path_identity_stable_inside_candidate_window
+3,path,0.2535,0.0634,1.0000,0.0000,path-keyed-translation-control,residual_path_identity_change
+3,topology-dp,0.3310,0.0827,1.0000,1.0000,path-keyed-translation-control,outside_candidate_window_detected

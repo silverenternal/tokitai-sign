@@ -1,0 +1,6 @@
+profile,glyph_history,low_latency,uncapped_sleep,frames,mean_build_time_us,p95_build_time_us,p99_build_time_us,worst_build_time_us,scope,fps60_budget_percent,fps120_budget_percent,fps240_budget_percent,fps1000_budget_percent,fps1200_budget_percent,claim
+full-topology-dp,topology-dp,false,false,8,12685.2871,12719.1865,12719.1865,12719.1865,release-frame-build-no-terminal-io,76.1117,152.2235,304.4467,1268.5288,1522.2406,measured-frame-build-does-not-fit-120fps-budget
+low-latency-topology-dp,topology-dp,true,false,8,528.8871,530.6343,530.6343,530.6343,release-frame-build-no-terminal-io,3.1733,6.3466,12.6933,52.8887,63.4667,measured-frame-build-fits-1200fps-budget
+uncapped-low-latency-topology-dp,topology-dp,true,true,8,527.6758,528.5817,528.5817,528.5817,release-frame-build-no-terminal-io,3.1661,6.3321,12.6642,52.7676,63.3214,measured-frame-build-fits-1200fps-budget
+topology-sensitive-only-path-fallback,path,true,false,8,519.0397,520.7639,520.7639,520.7639,release-frame-build-no-terminal-io,3.1142,6.2285,12.4569,51.9040,62.2850,measured-frame-build-fits-1200fps-budget
+low-complexity-path-fallback,path,true,false,8,514.6843,516.8085,516.8085,516.8085,release-frame-build-no-terminal-io,3.0881,6.1762,12.3524,51.4684,61.7624,measured-frame-build-fits-1200fps-budget

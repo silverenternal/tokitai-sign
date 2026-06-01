@@ -1,0 +1,2 @@
+profile,glyph_history,samples,mean_us,median_us,stdev_us,ci95_us,p95_us,p99_us,p999_us,worst_us,fps1200_budget_percent_p99,terminal_io_included,claim
+low-latency-topology-dp,topology-dp,1000,528.8699,528.4194,2.8510,0.1767,531.5945,534.2482,556.3298,601.7796,64.1100,false,p99-frame-build-fits-1200fps-budget

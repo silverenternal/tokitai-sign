@@ -1,0 +1,4 @@
+measurement,scope,status,required_fields,claim_boundary
+frame-build,terminal-end-to-end,pending_manual,profile|glyph_history|low_latency|mean_build_us|p99_build_us,automated_csv_supports_frame_build_budget_only
+terminal-write-flush,terminal-end-to-end,pending_manual,terminal|shell_or_tmux|font|columns|rows|bytes_per_frame|write_us|flush_us,manual_capture_required_before_end_to_end_fps_claim
+observed-display-cadence,terminal-end-to-end,pending_manual,display_hz|capture_tool|capture_fps|delivered_frame_intervals|dropped_frames,manual_capture_required_before_visible_fps_claim

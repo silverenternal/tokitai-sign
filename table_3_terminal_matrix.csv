@@ -1,0 +1,7 @@
+terminal,os,font,columns,rows,profile,motion,dirty_mode,glyph_history,fps_tier,average_fps,worst_frame_ms,dirty_cells,dirty_runs,stale_cells,stale_runs,glyph_mode,terminal_preset,color_mode,notes
+unknown,linux,,80,24,ultra,prime,full,path,120,,,,,,,Unicode,unknown,truecolor,auto-generated current environment row
+tmux-local-layer,linux,Nimbus Mono PS Regular,80,24,ultra,prime,full,topology-dp,120,,,,,,,Unicode,tmux-256color,truecolor,measured local terminal-layer row; outer emulator and visual box-drawing connectivity not certified
+wezterm,,,80,24,ultra,prime,full,path,,,,,,,,,,,
+kitty-or-alacritty,,,80,24,ultra,prime,full,path,,,,,,,,,,,
+vscode,,,80,24,ultra,prime,full,path,,,,,,,,,,,
+conservative,,,80,24,ultra,prime,full,path,,,,,,,,,,,
